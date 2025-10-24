@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYT Crossword Flashcards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            color: #333;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .clue-text {
+            font-size: 1.8em;
+            line-height: 1.4;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .word-text {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+
+        .metadata {
+            font-size: 0.9em;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .metadata div {
+            margin: 2px 0;
+        }
+
+        .progress {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            min-width: 120px;
+        }
+
+        .flip-hint {
+            text-align: center;
+            color: white;
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .flashcard {
+                height: 350px;
+            }
+
+            .card-face {
+                padding: 30px 20px;
+            }
+
+            .clue-text {
+                font-size: 1.5em;
+            }
+
+            .word-text {
+                font-size: 2.5em;
+            }
+
+            .nav-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧩 NYT Crossword Flashcards</h1>
+            <p>Test your crossword knowledge!</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="loadCards()">🔄 Shuffle Cards</button>
+            <button class="btn" onclick="resetProgress()">↩️ Reset</button>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading flashcards...
+        </div>
+
+        <div id="app" style="display: none;">
+            <div class="progress">
+                <div>Card <span id="current">1</span> of <span id="total">0</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="clue-text" id="clue-text">Click "Shuffle Cards" to begin!</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="word-text" id="word-text">WORD</div>
+                        <div class="metadata" id="metadata">
+                            <div><strong>Rank:</strong> <span id="rank">-</span></div>
+                            <div><strong>Occurrences:</strong> <span id="occurrences">-</span></div>
+                            <div><strong>Date:</strong> <span id="date">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="btn nav-btn" id="prev-btn" onclick="previousCard()" disabled>← Previous</button>
+                <button class="btn nav-btn" id="next-btn" onclick="nextCard()" disabled>Next →</button>
+            </div>
+
+            <div class="flip-hint">
+                💡 Click the card to flip it!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        // Load CSV data
+        async function loadCards() {
+            try {
+                const response = await fetch('output.csv');
+                const csvText = await response.text();
+
+                // Parse CSV
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',');
+
+                flashcards = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        const values = parseCSVLine(line);
+                        if (values.length >= 5) {
+                            flashcards.push({
+                                word: values[0],
+                                clue: values[1],
+                                date: values[2],
+                                rank: values[3],
+                                occurrences: values[4]
+                            });
+                        }
+                    }
+                }
+
+                // Shuffle the cards
+                shuffleArray(flashcards);
+
+                currentIndex = 0;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+
+                updateCard();
+                updateProgress();
+                updateNavigation();
+
+                console.log(`Loaded ${flashcards.length} flashcards`);
+            } catch (error) {
+                console.error('Error loading flashcards:', error);
+                document.getElementById('loading').innerHTML = 'Error loading flashcards. Make sure output.csv is in the same folder.';
+            }
+        }
+
+        // Parse CSV line handling quoted fields
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            values.push(current.trim());
+            return values;
+        }
+
+        // Shuffle array using Fisher-Yates algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function flipCard() {
+            const card = document.getElementById('flashcard');
+            card.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function updateCard() {
+            if (flashcards.length === 0) return;
+
+            const flashcard = document.getElementById('flashcard');
+
+            // Reset flip state first, then update content after animation
+            if (isFlipped) {
+                flashcard.classList.remove('flipped');
+                isFlipped = false;
+
+                // Wait for flip animation to complete before updating content
+                setTimeout(() => {
+                    updateCardContent();
+                }, 600); // Match the CSS transition duration (0.6s)
+            } else {
+                updateCardContent();
+            }
+        }
+
+        function updateCardContent() {
+            const card = flashcards[currentIndex];
+            const wordLength = card.word.length;
+            const clueWithLength = `${card.clue} (${wordLength})`;
+
+            document.getElementById('clue-text').textContent = clueWithLength;
+            document.getElementById('word-text').textContent = card.word;
+            document.getElementById('rank').textContent = card.rank;
+            document.getElementById('occurrences').textContent = card.occurrences;
+            document.getElementById('date').textContent = card.date;
+        }
+
+        function updateProgress() {
+            if (flashcards.length === 0) return;
+
+            document.getElementById('current').textContent = currentIndex + 1;
+            document.getElementById('total').textContent = flashcards.length;
+
+            const progress = ((currentIndex + 1) / flashcards.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        function updateNavigation() {
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').disabled = currentIndex === flashcards.length - 1 || flashcards.length === 0;
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+                updateProgress();
+                updateNavigation();
+            }
+        }
+
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+                updateCard();
+                updateProgress();
+                updateNavigation();
+            }
+        }
+
+        function resetProgress() {
+            currentIndex = 0;
+            updateCard();
+            updateProgress();
+            updateNavigation();
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousCard();
+                    break;
+                case 'ArrowRight':
+                    nextCard();
+                    break;
+                case ' ':
+                case 'Enter':
+                    event.preventDefault();
+                    flipCard();
+                    break;
+            }
+        });
+
+        // Load cards when page loads
+        window.addEventListener('load', loadCards);
+    </script>
+</body>
+</html>
