@@ -502,6 +502,22 @@
             updateNavigation();
         }
 
+        // Handle card click to flip
+        document.getElementById('flashcard').addEventListener('click', function(event) {
+            // Don't flip if clicking on the input field
+            if (event.target.id === 'guess-input') {
+                return;
+            }
+
+            if (!isFlipped) {
+                // Card is showing front - check answer and flip
+                checkAnswer();
+            } else {
+                // Card is showing back - go to next card
+                nextCard();
+            }
+        });
+
         // Handle Enter key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
