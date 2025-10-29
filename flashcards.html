@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1b1e2f 0%, #000000 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -107,13 +107,13 @@
         }
 
         .card-front {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            background: linear-gradient(135deg, #888888 0%, #f8f9ff 100%);
             color: #333;
         }
 
         .card-back {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
+            background: linear-gradient(135deg, #888888 0%, #00f2fe 100%);
+            color: rgb(117, 117, 117);
             transform: rotateY(180deg);
         }
 
@@ -190,6 +190,47 @@
             font-size: 1.2em;
         }
 
+        .guess-input {
+            width: 100%;
+            max-width: 300px;
+            background: #dedede;
+            padding: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            margin-top: 30px;
+            outline: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .guess-input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .feedback.correct {
+            background: rgba(76, 217, 100, 0.9);
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: rgba(255, 59, 48, 0.9);
+            color: white;
+        }
+
         @media (max-width: 480px) {
             .header h1 {
                 font-size: 2em;
@@ -244,12 +285,14 @@
             </div>
 
             <div class="flashcard-container">
-                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="flashcard" id="flashcard">
                     <div class="card-face card-front">
                         <div class="clue-text" id="clue-text">Click "Shuffle Cards" to begin!</div>
+                        <input type="text" class="guess-input" id="guess-input" autocomplete="off">
                     </div>
                     <div class="card-face card-back">
                         <div class="word-text" id="word-text">WORD</div>
+                        <div id="feedback" class="feedback" style="display: none;"></div>
                         <div class="metadata" id="metadata">
                             <div><strong>Rank:</strong> <span id="rank">-</span></div>
                             <div><strong>Occurrences:</strong> <span id="occurrences">-</span></div>
@@ -265,7 +308,7 @@
             </div>
 
             <div class="flip-hint">
-                💡 Click the card to flip it!
+                💡 Type your answer and press Enter to check!
             </div>
         </div>
     </div>
@@ -312,6 +355,7 @@
                 updateCard();
                 updateProgress();
                 updateNavigation();
+                focusInput();
 
                 console.log(`Loaded ${flashcards.length} flashcards`);
             } catch (error) {
@@ -351,16 +395,44 @@
             }
         }
 
-        function flipCard() {
-            const card = document.getElementById('flashcard');
-            card.classList.toggle('flipped');
-            isFlipped = !isFlipped;
+        function focusInput() {
+            setTimeout(() => {
+                const input = document.getElementById('guess-input');
+                if (input) {
+                    input.focus();
+                }
+            }, 100);
+        }
+
+        function checkAnswer() {
+            const input = document.getElementById('guess-input');
+            const guess = input.value.trim().toUpperCase();
+            const card = flashcards[currentIndex];
+            const correctAnswer = card.word.toUpperCase();
+            const feedbackEl = document.getElementById('feedback');
+
+            const isCorrect = guess === correctAnswer;
+
+            feedbackEl.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
+            feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            feedbackEl.style.display = 'block';
+
+            // Flip the card
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.add('flipped');
+            isFlipped = true;
         }
 
         function updateCard() {
             if (flashcards.length === 0) return;
 
             const flashcard = document.getElementById('flashcard');
+            const input = document.getElementById('guess-input');
+            const feedbackEl = document.getElementById('feedback');
+
+            // Clear input and hide feedback
+            input.value = '';
+            feedbackEl.style.display = 'none';
 
             // Reset flip state first, then update content after animation
             if (isFlipped) {
@@ -370,9 +442,11 @@
                 // Wait for flip animation to complete before updating content
                 setTimeout(() => {
                     updateCardContent();
+                    focusInput();
                 }, 600); // Match the CSS transition duration (0.6s)
             } else {
                 updateCardContent();
+                focusInput();
             }
         }
 
@@ -428,20 +502,22 @@
             updateNavigation();
         }
 
-        // Keyboard navigation
+        // Handle Enter key
         document.addEventListener('keydown', function(event) {
-            switch(event.key) {
-                case 'ArrowLeft':
-                    previousCard();
-                    break;
-                case 'ArrowRight':
+            if (event.key === 'Enter') {
+                event.preventDefault();
+
+                if (!isFlipped) {
+                    // Card is showing front - check answer and flip
+                    checkAnswer();
+                } else {
+                    // Card is showing back - go to next card
                     nextCard();
-                    break;
-                case ' ':
-                case 'Enter':
-                    event.preventDefault();
-                    flipCard();
-                    break;
+                }
+            } else if (event.key === 'ArrowLeft') {
+                previousCard();
+            } else if (event.key === 'ArrowRight') {
+                nextCard();
             }
         });
 

@@ -90,13 +90,13 @@ def get_clues_for_word(word, n_clues, session=None):
 
     return clues
 
-def generate_wordlist_from_popular(output_file="wordlist.csv", top_n=100):
+def generate_wordlist_from_popular(output_file="wordlist.csv", top_n=500, factor=80):
     """
     Generate wordlist CSV from xwordinfo.com Popular page
 
     Args:
         output_file: Output CSV filename
-        top_n: Number of top words to extract (default 100)
+        top_n: Number of top words to extract
     """
     session = create_session()
     print("Fetching Popular page...")
@@ -141,8 +141,8 @@ def generate_wordlist_from_popular(output_file="wordlist.csv", top_n=100):
                 for link in word_links:
                     word_text = link.get_text(strip=True)
                     if word_text:  # Make sure word isn't empty
-                        # Calculate clues count (count // 40)
-                        clues = count // 40
+                        # Calculate clues count by scaling by factor
+                        clues = count // factor
 
                         wordlist_data.append({
                             "Word": word_text,
