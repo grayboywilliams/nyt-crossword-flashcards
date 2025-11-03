@@ -44,7 +44,7 @@ def main():
     socketserver.TCPServer.allow_reuse_address = True
     
     with socketserver.TCPServer(("", port), Handler) as httpd:
-        url = f"http://localhost:{port}/flashcards.html"
+        url = f"http://localhost:{port}/index.html"
         print(f"Server running at {url}")
         if port != PORT:
             print(f"(Port {PORT} was in use, using {port} instead)")

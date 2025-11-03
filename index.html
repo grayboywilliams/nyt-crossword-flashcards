@@ -27,56 +27,119 @@
             width: 100%;
         }
 
-        .header {
+        /* Landing Page Styles */
+        .landing {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .landing h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .header p {
+        .landing p {
+            color: white;
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 50px;
+        }
+
+        .category-select {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        select {
+            width: 100%;
+            padding: 15px 20px;
             font-size: 1.1em;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .category-info {
+            margin-top: 20px;
+            color: white;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        /* Flashcards Styles */
+        .flashcards {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1em;
             opacity: 0.9;
         }
 
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .controls .btn {
+            padding: 10px 20px;
+            font-size: 1em;
         }
 
         .flashcard-container {
             perspective: 1000px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .flashcard {
@@ -122,15 +185,51 @@
             font-size: 1.8em;
             line-height: 1.4;
             font-weight: 500;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .word-text {
             font-size: 3em;
             font-weight: bold;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             letter-spacing: 2px;
+        }
+
+        .guess-input {
+            width: 100%;
+            max-width: 300px;
+            background: #dedede;
+            padding: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 3px solid #667eea;
+            border-radius: 8px;
+            margin-top: 30px;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .guess-input:focus {
+            border-color: #764ba2;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: rgba(76, 217, 100, 0.9);
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: rgba(255, 59, 48, 0.9);
+            color: white;
         }
 
         .metadata {
@@ -139,14 +238,10 @@
             line-height: 1.6;
         }
 
-        .metadata div {
-            margin: 2px 0;
-        }
-
         .progress {
             text-align: center;
             color: white;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .progress-bar {
@@ -171,145 +266,97 @@
             align-items: center;
         }
 
-        .nav-btn {
-            padding: 15px 30px;
-            font-size: 18px;
-            min-width: 120px;
-        }
-
-        .flip-hint {
-            text-align: center;
-            color: white;
-            font-size: 0.9em;
-            opacity: 0.7;
-            margin-top: 15px;
-        }
-
         .loading {
             text-align: center;
             color: white;
             font-size: 1.2em;
         }
 
-        .guess-input {
-            width: 100%;
-            max-width: 300px;
-            background: #dedede;
-            padding: 15px;
-            font-size: 1.2em;
-            text-align: center;
-            border: 3px solid #667eea;
-            border-radius: 8px;
-            margin-top: 30px;
-            outline: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .guess-input:focus {
-            border-color: #764ba2;
-            box-shadow: 0 0 10px rgba(118, 75, 162, 0.3);
-        }
-
-        .feedback {
-            margin-top: 20px;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 1.3em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .feedback.correct {
-            background: rgba(76, 217, 100, 0.9);
-            color: white;
-        }
-
-        .feedback.incorrect {
-            background: rgba(255, 59, 48, 0.9);
-            color: white;
-        }
-
         @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2em;
+            .landing h1 {
+                font-size: 2.2em;
             }
-
+            .header h1 {
+                font-size: 1.8em;
+            }
             .flashcard {
                 height: 350px;
             }
-
-            .card-face {
-                padding: 30px 20px;
-            }
-
             .clue-text {
                 font-size: 1.5em;
             }
-
             .word-text {
                 font-size: 2.5em;
-            }
-
-            .nav-btn {
-                padding: 12px 20px;
-                font-size: 16px;
-                min-width: 100px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <!-- Landing Page -->
+        <div id="landing" class="landing">
             <h1>🧩 NYT Crossword Flashcards</h1>
-            <p>Test your crossword knowledge!</p>
-        </div>
+            <p>Master your crossword skills!</p>
 
-        <div class="controls">
-            <button class="btn" onclick="loadCards()">🔄 Shuffle Cards</button>
-            <button class="btn" onclick="resetProgress()">↩️ Reset</button>
-        </div>
+            <div class="category-select">
+                <select id="category">
+                    <option value="output.csv">All Clues (1,352)</option>
+                    <option value="study/names.csv">Names & People (151)</option>
+                    <option value="study/foreign.csv">Foreign Words (59)</option>
+                </select>
 
-        <div id="loading" class="loading">
-            Loading flashcards...
-        </div>
+                <button class="btn" onclick="startPractice()">Start Practice →</button>
 
-        <div id="app" style="display: none;">
-            <div class="progress">
-                <div>Card <span id="current">1</span> of <span id="total">0</span></div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+                <div class="category-info">
+                    💡 Type your answer and press Enter to check!
                 </div>
             </div>
+        </div>
 
-            <div class="flashcard-container">
-                <div class="flashcard" id="flashcard">
-                    <div class="card-face card-front">
-                        <div class="clue-text" id="clue-text">Click "Shuffle Cards" to begin!</div>
-                        <input type="text" class="guess-input" id="guess-input" autocomplete="off">
+        <!-- Flashcards Page -->
+        <div id="flashcards" class="flashcards">
+            <div class="header">
+                <h1>🧩 NYT Crossword Flashcards</h1>
+                <p id="category-name">All Clues</p>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+                <button class="btn btn-secondary" onclick="loadCards()">🔄 Shuffle</button>
+                <button class="btn btn-secondary" onclick="resetProgress()">↩️ Reset</button>
+            </div>
+
+            <div id="loading" class="loading">Loading flashcards...</div>
+
+            <div id="app" style="display: none;">
+                <div class="progress">
+                    <div>Card <span id="current">1</span> of <span id="total">0</span></div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
                     </div>
-                    <div class="card-face card-back">
-                        <div class="word-text" id="word-text">WORD</div>
-                        <div id="feedback" class="feedback" style="display: none;"></div>
-                        <div class="metadata" id="metadata">
-                            <div><strong>Rank:</strong> <span id="rank">-</span></div>
-                            <div><strong>Occurrences:</strong> <span id="occurrences">-</span></div>
-                            <div><strong>Date:</strong> <span id="date">-</span></div>
+                </div>
+
+                <div class="flashcard-container">
+                    <div class="flashcard" id="flashcard" onclick="handleCardClick(event)">
+                        <div class="card-face card-front">
+                            <div class="clue-text" id="clue-text">Click "Shuffle" to begin!</div>
+                            <input type="text" class="guess-input" id="guess-input" autocomplete="off">
+                        </div>
+                        <div class="card-face card-back">
+                            <div class="word-text" id="word-text">WORD</div>
+                            <div id="feedback" class="feedback"></div>
+                            <div class="metadata">
+                                <div><strong>Date:</strong> <span id="date">-</span></div>
+                                <div><strong>Rank:</strong> <span id="rank">-</span> | <strong>Occurrences:</strong> <span id="occurrences">-</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="navigation">
-                <button class="btn nav-btn" id="prev-btn" onclick="previousCard()" disabled>← Previous</button>
-                <button class="btn nav-btn" id="next-btn" onclick="nextCard()" disabled>Next →</button>
-            </div>
-
-            <div class="flip-hint">
-                💡 Type your answer and press Enter to check!
+                <div class="navigation">
+                    <button class="btn" id="prev-btn" onclick="previousCard()">← Prev</button>
+                    <button class="btn" id="next-btn" onclick="nextCard()">Next →</button>
+                </div>
             </div>
         </div>
     </div>
@@ -318,16 +365,32 @@
         let flashcards = [];
         let currentIndex = 0;
         let isFlipped = false;
+        let currentFile = 'output.csv';
 
-        // Load CSV data
+        const categoryNames = {
+            'output.csv': 'All Clues',
+            'study/names.csv': 'Names & People',
+            'study/foreign.csv': 'Foreign Words'
+        };
+
+        function startPractice() {
+            currentFile = document.getElementById('category').value;
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('flashcards').style.display = 'block';
+            document.getElementById('category-name').textContent = categoryNames[currentFile];
+            loadCards();
+        }
+
+        function goBack() {
+            document.getElementById('flashcards').style.display = 'none';
+            document.getElementById('landing').style.display = 'block';
+        }
+
         async function loadCards() {
             try {
-                const response = await fetch('output.csv');
+                const response = await fetch(currentFile);
                 const csvText = await response.text();
-
-                // Parse CSV
                 const lines = csvText.split('\n');
-                const headers = lines[0].split(',');
 
                 flashcards = [];
                 for (let i = 1; i < lines.length; i++) {
@@ -346,26 +409,20 @@
                     }
                 }
 
-                // Shuffle the cards
                 shuffleArray(flashcards);
-
                 currentIndex = 0;
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
-
                 updateCard();
                 updateProgress();
                 updateNavigation();
                 focusInput();
-
-                console.log(`Loaded ${flashcards.length} flashcards`);
             } catch (error) {
                 console.error('Error loading flashcards:', error);
-                document.getElementById('loading').innerHTML = 'Error loading flashcards. Make sure output.csv is in the same folder.';
+                document.getElementById('loading').innerHTML = 'Error loading flashcards.';
             }
         }
 
-        // Parse CSV line handling quoted fields
         function parseCSVLine(line) {
             const values = [];
             let current = '';
@@ -373,7 +430,6 @@
 
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
-
                 if (char === '"') {
                     inQuotes = !inQuotes;
                 } else if (char === ',' && !inQuotes) {
@@ -383,12 +439,10 @@
                     current += char;
                 }
             }
-
             values.push(current.trim());
             return values;
         }
 
-        // Shuffle array using Fisher-Yates algorithm
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -399,9 +453,7 @@
         function focusInput() {
             setTimeout(() => {
                 const input = document.getElementById('guess-input');
-                if (input) {
-                    input.focus();
-                }
+                if (input) input.focus();
             }, 100);
         }
 
@@ -413,14 +465,11 @@
             const feedbackEl = document.getElementById('feedback');
 
             const isCorrect = guess === correctAnswer;
-
             feedbackEl.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
             feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
             feedbackEl.style.display = 'block';
 
-            // Flip the card
-            const flashcard = document.getElementById('flashcard');
-            flashcard.classList.add('flipped');
+            document.getElementById('flashcard').classList.add('flipped');
             isFlipped = true;
         }
 
@@ -431,20 +480,16 @@
             const input = document.getElementById('guess-input');
             const feedbackEl = document.getElementById('feedback');
 
-            // Clear input and hide feedback
             input.value = '';
             feedbackEl.style.display = 'none';
 
-            // Reset flip state first, then update content after animation
             if (isFlipped) {
                 flashcard.classList.remove('flipped');
                 isFlipped = false;
-
-                // Wait for flip animation to complete before updating content
                 setTimeout(() => {
                     updateCardContent();
                     focusInput();
-                }, 600); // Match the CSS transition duration (0.6s)
+                }, 600);
             } else {
                 updateCardContent();
                 focusInput();
@@ -465,10 +510,8 @@
 
         function updateProgress() {
             if (flashcards.length === 0) return;
-
             document.getElementById('current').textContent = currentIndex + 1;
             document.getElementById('total').textContent = flashcards.length;
-
             const progress = ((currentIndex + 1) / flashcards.length) * 100;
             document.getElementById('progress-fill').style.width = progress + '%';
         }
@@ -503,43 +546,33 @@
             updateNavigation();
         }
 
-        // Handle card click to flip
-        document.getElementById('flashcard').addEventListener('click', function(event) {
-            // Don't flip if clicking on the input field
-            if (event.target.id === 'guess-input') {
-                return;
-            }
-
+        function handleCardClick(event) {
+            if (event.target.id === 'guess-input') return;
             if (!isFlipped) {
-                // Card is showing front - check answer and flip
                 checkAnswer();
             } else {
-                // Card is showing back - go to next card
                 nextCard();
             }
-        });
+        }
 
-        // Handle Enter key
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-
-                if (!isFlipped) {
-                    // Card is showing front - check answer and flip
-                    checkAnswer();
-                } else {
-                    // Card is showing back - go to next card
+            if (document.getElementById('flashcards').style.display === 'block') {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    if (!isFlipped) {
+                        checkAnswer();
+                    } else {
+                        nextCard();
+                    }
+                } else if (event.key === 'ArrowLeft') {
+                    previousCard();
+                } else if (event.key === 'ArrowRight') {
                     nextCard();
                 }
-            } else if (event.key === 'ArrowLeft') {
-                previousCard();
-            } else if (event.key === 'ArrowRight') {
-                nextCard();
+            } else if (event.key === 'Enter') {
+                startPractice();
             }
         });
-
-        // Load cards when page loads
-        window.addEventListener('load', loadCards);
     </script>
 </body>
 </html>
