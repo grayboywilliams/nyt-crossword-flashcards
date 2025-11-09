@@ -266,7 +266,7 @@ def get_answers_for_clue(clue, session=None, top_n=5):
         '__VIEWSTATEGENERATOR': viewstate_gen.get('value', '') if viewstate_gen else '',
         '__EVENTVALIDATION': event_validation.get('value', '') if event_validation else '',
         'ctl00$CPHContent$SearchPhrase': clue,
-        'ctl00$CPHContent$rblCompare': 'Ignore case',  # Search option
+        'ctl00$CPHContent$rblCompare': 'Match complete clue',  # Search option
         'ctl00$CPHContent$SearchBut': 'Search'
     }
 
@@ -291,7 +291,7 @@ def get_answers_for_clue(clue, session=None, top_n=5):
                 '__VIEWSTATEGENERATOR': viewstate_gen.get('value', '') if viewstate_gen else '',
                 '__EVENTVALIDATION': event_validation.get('value', '') if event_validation else '',
                 'ctl00$CPHContent$SearchPhrase': clue,
-                'ctl00$CPHContent$rblCompare': 'Ignore case',
+                'ctl00$CPHContent$rblCompare': 'Match complete clue',
                 'ctl00$CPHContent$SearchBut': 'Search'
             }
             # Retry the POST

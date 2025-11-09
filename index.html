@@ -187,11 +187,22 @@
             font-weight: 500;
         }
 
+        .clue-text.small {
+            font-size: 1.3em;
+            line-height: 1.5;
+        }
+
         .word-text {
             font-size: 3em;
             font-weight: bold;
             margin-bottom: 20px;
             letter-spacing: 2px;
+        }
+
+        .word-text.small {
+            font-size: 1.3em;
+            line-height: 1.5;
+            letter-spacing: normal;
         }
 
         .guess-input {
@@ -285,8 +296,14 @@
             .clue-text {
                 font-size: 1.5em;
             }
+            .clue-text.small {
+                font-size: 1.1em;
+            }
             .word-text {
                 font-size: 2.5em;
+            }
+            .word-text.small {
+                font-size: 1.1em;
             }
         }
     </style>
@@ -356,6 +373,7 @@
 
                 <div class="navigation">
                     <button class="btn" id="prev-btn" onclick="previousCard()">← Prev</button>
+                    <button class="btn btn-secondary" id="flip-btn" onclick="flipCard()">🔄 Flip</button>
                     <button class="btn" id="next-btn" onclick="nextCard()">Next →</button>
                 </div>
             </div>
@@ -516,21 +534,44 @@
         function updateCardContent() {
             const card = flashcards[currentIndex];
             const isCommonClues = currentFile.includes('common_clues');
+            const clueTextEl = document.getElementById('clue-text');
+            const wordTextEl = document.getElementById('word-text');
 
             if (isCommonClues) {
-                // For common clues, clue already has hints in brackets, don't add length
-                document.getElementById('clue-text').textContent = card.clue;
+                // For common clues, use smaller font and clue already has hints
+                clueTextEl.textContent = card.clue;
+                clueTextEl.classList.add('small');
+                wordTextEl.classList.add('small');
             } else {
-                // For regular flashcards, show word length
+                // For regular flashcards, use normal font and show word length
                 const wordLength = card.word.length;
                 const clueWithLength = `${card.clue} (${wordLength})`;
-                document.getElementById('clue-text').textContent = clueWithLength;
+                clueTextEl.textContent = clueWithLength;
+                clueTextEl.classList.remove('small');
+                wordTextEl.classList.remove('small');
             }
 
-            document.getElementById('word-text').textContent = card.word;
+            wordTextEl.textContent = card.word;
             document.getElementById('rank').textContent = card.rank;
             document.getElementById('occurrences').textContent = card.occurrences;
             document.getElementById('date').textContent = card.date;
+        }
+
+        function flipCard() {
+            const flashcard = document.getElementById('flashcard');
+            const input = document.getElementById('guess-input');
+
+            if (!isFlipped) {
+                // Flipping to back - check answer first
+                checkAnswer();
+            } else {
+                // Flipping back to front
+                flashcard.classList.remove('flipped');
+                isFlipped = false;
+                input.value = '';
+                document.getElementById('feedback').style.display = 'none';
+                focusInput();
+            }
         }
 
         function updateProgress() {
