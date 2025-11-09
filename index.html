@@ -303,6 +303,7 @@
                     <option value="output.csv">All Clues (1,352)</option>
                     <option value="study/names.csv">Names & People (151)</option>
                     <option value="study/foreign.csv">Foreign Words (59)</option>
+                    <option value="study/common_clues_flashcards.csv">Common Clues (Top Answers)</option>
                 </select>
 
                 <button class="btn" onclick="startPractice()">Start Practice →</button>
@@ -370,7 +371,8 @@
         const categoryNames = {
             'output.csv': 'All Clues',
             'study/names.csv': 'Names & People',
-            'study/foreign.csv': 'Foreign Words'
+            'study/foreign.csv': 'Foreign Words',
+            'study/common_clues_flashcards.csv': 'Common Clues'
         };
 
         function startPractice() {
@@ -393,11 +395,13 @@
                 const lines = csvText.split('\n');
 
                 flashcards = [];
+
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (line) {
                         const values = parseCSVLine(line);
                         if (values.length >= 5) {
+                            // Standard format: Word, Clue, Date, Rank, Occurrences
                             flashcards.push({
                                 word: values[0],
                                 clue: values[1],
@@ -461,10 +465,23 @@
             const input = document.getElementById('guess-input');
             const guess = input.value.trim().toUpperCase();
             const card = flashcards[currentIndex];
-            const correctAnswer = card.word.toUpperCase();
             const feedbackEl = document.getElementById('feedback');
 
-            const isCorrect = guess === correctAnswer;
+            let isCorrect = false;
+
+            // Check if this is common clues format (contains parentheses with counts)
+            if (card.word.includes('(')) {
+                // Parse out all possible answers from format like "NIL (25), NADA (25), PEP (10)"
+                const possibleAnswers = card.word.split(',').map(item => {
+                    // Extract just the word part before the parenthesis
+                    return item.trim().split('(')[0].trim().toUpperCase();
+                });
+                isCorrect = possibleAnswers.includes(guess);
+            } else {
+                // Regular flashcard format
+                isCorrect = guess === card.word.toUpperCase();
+            }
+
             feedbackEl.textContent = isCorrect ? '✓ Correct!' : '✗ Incorrect';
             feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
             feedbackEl.style.display = 'block';
@@ -498,10 +515,18 @@
 
         function updateCardContent() {
             const card = flashcards[currentIndex];
-            const wordLength = card.word.length;
-            const clueWithLength = `${card.clue} (${wordLength})`;
+            const isCommonClues = currentFile.includes('common_clues');
 
-            document.getElementById('clue-text').textContent = clueWithLength;
+            if (isCommonClues) {
+                // For common clues, clue already has hints in brackets, don't add length
+                document.getElementById('clue-text').textContent = card.clue;
+            } else {
+                // For regular flashcards, show word length
+                const wordLength = card.word.length;
+                const clueWithLength = `${card.clue} (${wordLength})`;
+                document.getElementById('clue-text').textContent = clueWithLength;
+            }
+
             document.getElementById('word-text').textContent = card.word;
             document.getElementById('rank').textContent = card.rank;
             document.getElementById('occurrences').textContent = card.occurrences;

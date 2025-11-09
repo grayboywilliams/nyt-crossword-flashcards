@@ -44,16 +44,39 @@ Create a new wordlist from the Popular page:
 python3 nytwords.py --generate-wordlist
 ```
 
+### Generate Common Clues Flashcards
+Create flashcards for the most common crossword clues with top 5 most-used answers:
+
+```bash
+# Generate flashcards for top 50 common clues (default)
+python3 nytwords.py --common-clues
+
+# Generate flashcards for top 100 common clues
+python3 nytwords.py --common-clues 100
+```
+
+This will create a file `common_clues_flashcards.csv` with columns:
+- `Clue` - The crossword clue (e.g., "Zip")
+- `ClueCount` - Number of times the clue appears in NYT crosswords
+- `TopAnswers` - Top 5 most-used answers with their usage counts (e.g., "NIL (25), NADA (25), PEP (10), NONE (7), SPED (5)")
+- `NumTopAnswers` - Number of top answers returned (usually 5, may be less for rare clues)
+
+Note: Cross-reference clues (e.g., "See 17-Across") are automatically filtered out.
+
 ### Available Functions
 - `generate_wordlist_from_popular(output_file="wordlist.csv", top_n=100)` - Generate wordlist from Popular page
 - `get_clues_for_word(word, n_clues, session=None)` - Get clues for single word, prints to console
 - `process_wordlist_csv(csv_file="wordlist.csv", output_file="output.csv")` - Process entire CSV
+- `generate_common_clues_flashcards(output_file="common_clues_flashcards.csv", top_n=50, top_answers=5)` - Generate flashcards for common clues with top N answers
+- `get_common_clues(top_n=100, session=None)` - Get list of most common clues (filters out cross-references)
+- `get_answers_for_clue(clue, session=None, top_n=5)` - Search for top N most-used answers to a specific clue
 - `create_session()` - Create authenticated session for xwordinfo.com
 
 ## Data Files
 
 - `wordlist.csv` - Input file with word statistics (Word, Clues, Occurrences, Rank)
 - `output.csv` - Generated output with format (Word, Clue, Date, Rank, Occurrences)
+- `common_clues_flashcards.csv` - Generated flashcards with format (Clue, ClueCount, TopAnswers, NumTopAnswers)
 - Script uses the "Clues" column from wordlist.csv to determine how many recent clues to fetch per word
 
 ## Notes

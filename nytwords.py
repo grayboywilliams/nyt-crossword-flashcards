@@ -175,6 +175,215 @@ def generate_wordlist_from_popular(output_file="wordlist.csv", top_n=500, factor
 
     return df
 
+def get_common_clues(top_n=100, session=None):
+    """
+    Get the most common clues from xwordinfo.com
+
+    Args:
+        top_n: Number of top common clues to extract
+        session: Optional existing session
+
+    Returns:
+        List of dictionaries with 'Clue' and 'Count'
+    """
+    if session is None:
+        session = create_session()
+        print("Establishing session...")
+
+    print(f"Fetching common clues...")
+    r = session.get('https://www.xwordinfo.com/CommonClues')
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    # Find the main table
+    table = soup.find("table")
+    if not table:
+        print("Error: Could not find common clues table")
+        return []
+
+    rows = table.find_all("tr")[1:]  # Skip header row
+    common_clues = []
+
+    for i, row in enumerate(rows):
+        if len(common_clues) >= top_n:
+            break
+
+        cells = row.find_all("td")
+        if len(cells) >= 2:
+            clue_text = cells[0].get_text(strip=True)
+            count_text = cells[1].get_text(strip=True)
+
+            # Filter out cross-reference clues like "See 17-Across" or "See 5-Down"
+            clue_lower = clue_text.lower()
+            if "see" in clue_lower and ("across" in clue_lower or "down" in clue_lower):
+                continue  # Skip cross-reference clues
+
+            try:
+                count = int(count_text)
+                common_clues.append({
+                    "Clue": clue_text,
+                    "Count": count
+                })
+            except ValueError:
+                continue  # Skip if count isn't a number
+
+    print(f"Found {len(common_clues)} common clues (filtered out cross-reference clues)")
+    return common_clues
+
+def get_answers_for_clue(clue, session=None, top_n=5):
+    """
+    Search for all answers for a specific clue and return top N by frequency
+
+    Args:
+        clue: The clue text to search for
+        session: Optional existing session
+        top_n: Number of top answers to return (default 5)
+
+    Returns:
+        List of tuples (answer, count) sorted by frequency
+    """
+    if session is None:
+        session = create_session()
+
+    print(f"  Searching for answers to: '{clue}'")
+
+    # Step 1: GET the search page to retrieve ViewState and other hidden fields
+    url = "https://www.xwordinfo.com/SearchClues"
+    r = session.get(url)
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    # Extract hidden form fields (required for ASP.NET)
+    viewstate = soup.find("input", {"id": "__VIEWSTATE"})
+    viewstate_gen = soup.find("input", {"id": "__VIEWSTATEGENERATOR"})
+    event_validation = soup.find("input", {"id": "__EVENTVALIDATION"})
+
+    if not viewstate:
+        print("    Warning: Could not find ViewState fields")
+        return []
+
+    # Step 2: POST the search with all required fields
+    form_data = {
+        '__VIEWSTATE': viewstate.get('value', ''),
+        '__VIEWSTATEGENERATOR': viewstate_gen.get('value', '') if viewstate_gen else '',
+        '__EVENTVALIDATION': event_validation.get('value', '') if event_validation else '',
+        'ctl00$CPHContent$SearchPhrase': clue,
+        'ctl00$CPHContent$rblCompare': 'Ignore case',  # Search option
+        'ctl00$CPHContent$SearchBut': 'Search'
+    }
+
+    r = session.post(url, data=form_data)
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    # Check if we got redirected to login page
+    page_title = soup.title.string.strip() if soup.title else ""
+    if "login" in page_title.lower():
+        print("    Session expired, re-establishing...")
+        # Re-create the session
+        session = create_session()
+        # Retry the GET to get new ViewState
+        r = session.get(url)
+        soup = BeautifulSoup(r.text, "html.parser")
+        viewstate = soup.find("input", {"id": "__VIEWSTATE"})
+        viewstate_gen = soup.find("input", {"id": "__VIEWSTATEGENERATOR"})
+        event_validation = soup.find("input", {"id": "__EVENTVALIDATION"})
+        if viewstate:
+            form_data = {
+                '__VIEWSTATE': viewstate.get('value', ''),
+                '__VIEWSTATEGENERATOR': viewstate_gen.get('value', '') if viewstate_gen else '',
+                '__EVENTVALIDATION': event_validation.get('value', '') if event_validation else '',
+                'ctl00$CPHContent$SearchPhrase': clue,
+                'ctl00$CPHContent$rblCompare': 'Ignore case',
+                'ctl00$CPHContent$SearchBut': 'Search'
+            }
+            # Retry the POST
+            r = session.post(url, data=form_data)
+            soup = BeautifulSoup(r.text, "html.parser")
+
+    # Step 3: Count answer occurrences
+    from collections import Counter
+    answer_counts = Counter()
+
+    # Find all links that point to Finder (word lookup)
+    all_links = soup.find_all("a", href=True)
+    for link in all_links:
+        if "Finder?word=" in link['href']:
+            answer = link.get_text(strip=True)
+            if answer and len(answer) > 0:  # Make sure it's not empty
+                answer_counts[answer] += 1
+
+    # Get top N most common answers
+    top_answers = answer_counts.most_common(top_n)
+    print(f"    Found {len(answer_counts)} unique answers, returning top {len(top_answers)}")
+    return top_answers
+
+def generate_common_clues_flashcards(output_file="study/common_clues_flashcards.csv", top_n=50, top_answers=5):
+    """
+    Generate flashcards for common clues with top most-used answers
+
+    Args:
+        output_file: Output CSV filename
+        top_n: Number of top common clues to process
+        top_answers: Number of top answers to include per clue (default 5)
+
+    Returns:
+        DataFrame with flashcard data
+    """
+    # Create session once for all requests
+    session = create_session()
+
+    # Step 1: Get list of common clues
+    print(f"\nStep 1: Fetching top {top_n} common clues...")
+    common_clues = get_common_clues(top_n=top_n, session=session)
+
+    if not common_clues:
+        print("Error: No common clues found")
+        return None
+
+    # Step 2: For each clue, find top answers by frequency
+    print(f"\nStep 2: Finding top {top_answers} answers for each clue...")
+    flashcard_data = []
+
+    for i, clue_info in enumerate(common_clues):
+        clue = clue_info["Clue"]
+        clue_count = clue_info["Count"]
+
+        print(f"\nProcessing clue {i+1}/{len(common_clues)} (count: {clue_count})")
+
+        # Add delay to avoid rate limiting
+        if i > 0:
+            time.sleep(1)  # 1 second delay between requests
+
+        # Get top answers for this clue (returns list of tuples: [(answer, count), ...])
+        top_answer_list = get_answers_for_clue(clue, session=session, top_n=top_answers)
+
+        if top_answer_list:
+            # Format clue with answer hints: "Zip [3 letters (25x), 4 letters (25x), ...]"
+            answer_hints = [f"{len(answer)} letters ({cnt}x)" for answer, cnt in top_answer_list]
+            clue_with_hints = f"{clue} [{', '.join(answer_hints)}]"
+
+            # Format answers for the back: "NIL (25), NADA (25), PEP (10), ..."
+            answers_str = ", ".join([f"{answer} ({cnt})" for answer, cnt in top_answer_list])
+
+            flashcard_data.append({
+                "Word": answers_str,  # Back of card
+                "Clue": clue_with_hints,  # Front of card with hints
+                "Date": "-",
+                "Rank": i + 1,  # Position in the common clues list
+                "Occurrences": clue_count  # How many times this clue appears
+            })
+        else:
+            print(f"    Warning: No answers found for '{clue}'")
+
+    # Step 3: Save to CSV
+    print(f"\nStep 3: Saving flashcards...")
+    df = pd.DataFrame(flashcard_data)
+    df.to_csv(output_file, index=False)
+
+    print(f"\nGenerated {len(flashcard_data)} flashcards to {output_file}")
+    print("\nSample flashcards:")
+    print(df.head(10))
+
+    return df
+
 def process_wordlist_csv(csv_file="wordlist.csv", output_file="output.csv"):
     """
     Process entire wordlist CSV and output results to CSV file
@@ -300,6 +509,17 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--generate-wordlist":
         # Generate fresh wordlist from Popular page
         generate_wordlist_from_popular()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--common-clues":
+        # Generate flashcards for common clues
+        # Optional: specify number of clues (default 50)
+        top_n = 50
+        if len(sys.argv) > 2:
+            try:
+                top_n = int(sys.argv[2])
+            except ValueError:
+                print("Error: Second argument must be a number")
+                sys.exit(1)
+        generate_common_clues_flashcards(top_n=top_n)
     else:
         # Process existing wordlist to get clues
         process_wordlist_csv()
