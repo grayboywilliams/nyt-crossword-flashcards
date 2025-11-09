@@ -356,6 +356,7 @@
             <div class="controls">
                 <button class="btn btn-secondary" onclick="goBack()">← Back</button>
                 <button class="btn btn-secondary" onclick="loadCards()">🔄 Shuffle</button>
+                <button class="btn btn-secondary" onclick="loadCardsByRank()">📊 By Rank</button>
                 <button class="btn btn-secondary" onclick="resetProgress()">↩️ Reset</button>
             </div>
 
@@ -447,6 +448,47 @@
                 }
 
                 shuffleArray(flashcards);
+                currentIndex = 0;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                updateCard();
+                updateProgress();
+                updateNavigation();
+                focusInput();
+            } catch (error) {
+                console.error('Error loading flashcards:', error);
+                document.getElementById('loading').innerHTML = 'Error loading flashcards.';
+            }
+        }
+
+        async function loadCardsByRank() {
+            try {
+                const response = await fetch(currentFile);
+                const csvText = await response.text();
+                const lines = csvText.split('\n');
+
+                flashcards = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (line) {
+                        const values = parseCSVLine(line);
+                        if (values.length >= 5) {
+                            // Standard format: Word, Clue, Date, Rank, Occurrences
+                            flashcards.push({
+                                word: values[0],
+                                clue: values[1],
+                                date: values[2],
+                                rank: values[3],
+                                occurrences: values[4]
+                            });
+                        }
+                    }
+                }
+
+                // Sort by rank (ascending order)
+                flashcards.sort((a, b) => parseInt(a.rank) - parseInt(b.rank));
+
                 currentIndex = 0;
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
