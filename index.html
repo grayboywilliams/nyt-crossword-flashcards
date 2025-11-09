@@ -273,8 +273,15 @@
 
         .navigation {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .navigation .btn {
+            padding: 12px 25px;
+            font-size: 1em;
         }
 
         .loading {
@@ -304,6 +311,14 @@
             }
             .word-text.small {
                 font-size: 1.1em;
+            }
+            .navigation .btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            .controls .btn {
+                padding: 8px 15px;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -373,7 +388,7 @@
 
                 <div class="navigation">
                     <button class="btn" id="prev-btn" onclick="previousCard()">← Prev</button>
-                    <button class="btn btn-secondary" id="flip-btn" onclick="flipCard()">🔄 Flip</button>
+                    <button class="btn" id="flip-btn" onclick="flipCard()">🔄 Flip</button>
                     <button class="btn" id="next-btn" onclick="nextCard()">Next →</button>
                 </div>
             </div>
