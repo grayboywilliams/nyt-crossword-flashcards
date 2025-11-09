@@ -327,6 +327,8 @@ def generate_common_clues_flashcards(output_file="study/common_clues_flashcards.
     Returns:
         DataFrame with flashcard data
     """
+    import os
+
     # Create session once for all requests
     session = create_session()
 
@@ -338,11 +340,26 @@ def generate_common_clues_flashcards(output_file="study/common_clues_flashcards.
         print("Error: No common clues found")
         return None
 
+    # Check if we have a partial file to resume from
+    start_index = 0
+    if os.path.exists(output_file):
+        try:
+            existing_df = pd.read_csv(output_file)
+            start_index = len(existing_df)
+            print(f"Resuming from clue {start_index + 1} (found {start_index} existing flashcards)")
+        except:
+            pass
+
     # Step 2: For each clue, find top answers by frequency
     print(f"\nStep 2: Finding top {top_answers} answers for each clue...")
-    flashcard_data = []
 
-    for i, clue_info in enumerate(common_clues):
+    # Write header if starting fresh
+    if start_index == 0:
+        df_header = pd.DataFrame(columns=["Word", "Clue", "Date", "Rank", "Occurrences"])
+        df_header.to_csv(output_file, index=False)
+
+    for i in range(start_index, len(common_clues)):
+        clue_info = common_clues[i]
         clue = clue_info["Clue"]
         clue_count = clue_info["Count"]
 
@@ -352,33 +369,43 @@ def generate_common_clues_flashcards(output_file="study/common_clues_flashcards.
         if i > 0:
             time.sleep(1)  # 1 second delay between requests
 
-        # Get top answers for this clue (returns list of tuples: [(answer, count), ...])
-        top_answer_list = get_answers_for_clue(clue, session=session, top_n=top_answers)
+        try:
+            # Get top answers for this clue (returns list of tuples: [(answer, count), ...])
+            top_answer_list = get_answers_for_clue(clue, session=session, top_n=top_answers)
 
-        if top_answer_list:
-            # Format clue with answer hints: "Zip [3 letters (25x), 4 letters (25x), ...]"
-            answer_hints = [f"{len(answer)} letters ({cnt}x)" for answer, cnt in top_answer_list]
-            clue_with_hints = f"{clue} [{', '.join(answer_hints)}]"
+            if top_answer_list:
+                # Format clue with answer hints: "Zip [3 letters (25x), 4 letters (25x), ...]"
+                answer_hints = [f"{len(answer)} letters ({cnt}x)" for answer, cnt in top_answer_list]
+                clue_with_hints = f"{clue} [{', '.join(answer_hints)}]"
 
-            # Format answers for the back: "NIL (25), NADA (25), PEP (10), ..."
-            answers_str = ", ".join([f"{answer} ({cnt})" for answer, cnt in top_answer_list])
+                # Format answers for the back: "NIL (25), NADA (25), PEP (10), ..."
+                answers_str = ", ".join([f"{answer} ({cnt})" for answer, cnt in top_answer_list])
 
-            flashcard_data.append({
-                "Word": answers_str,  # Back of card
-                "Clue": clue_with_hints,  # Front of card with hints
-                "Date": "-",
-                "Rank": i + 1,  # Position in the common clues list
-                "Occurrences": clue_count  # How many times this clue appears
-            })
-        else:
-            print(f"    Warning: No answers found for '{clue}'")
+                flashcard_row = {
+                    "Word": answers_str,  # Back of card
+                    "Clue": clue_with_hints,  # Front of card with hints
+                    "Date": "-",
+                    "Rank": i + 1,  # Position in the common clues list
+                    "Occurrences": clue_count  # How many times this clue appears
+                }
 
-    # Step 3: Save to CSV
-    print(f"\nStep 3: Saving flashcards...")
-    df = pd.DataFrame(flashcard_data)
-    df.to_csv(output_file, index=False)
+                # Append to CSV immediately
+                df_row = pd.DataFrame([flashcard_row])
+                df_row.to_csv(output_file, mode='a', header=False, index=False)
+            else:
+                print(f"    Warning: No answers found for '{clue}'")
 
-    print(f"\nGenerated {len(flashcard_data)} flashcards to {output_file}")
+        except Exception as e:
+            print(f"    ERROR processing '{clue}': {e}")
+            print(f"    Saved {i} flashcards so far. You can resume by running again.")
+            # Don't re-raise - just continue to next clue
+            continue
+
+    # Step 3: Read final CSV
+    print(f"\nStep 3: Loading final flashcards...")
+    df = pd.read_csv(output_file)
+
+    print(f"\nGenerated {len(df)} flashcards to {output_file}")
     print("\nSample flashcards:")
     print(df.head(10))
 
