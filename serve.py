@@ -6,7 +6,7 @@ import socketserver
 import webbrowser
 import os
 
-PORT = 8000
+PORT = 8080
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
@@ -15,7 +15,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
         super().end_headers()
 
-def find_available_port(start_port=8000, max_attempts=10):
+def find_available_port(start_port=8080, max_attempts=10):
     """Find an available port starting from start_port."""
     for port in range(start_port, start_port + max_attempts):
         try:
