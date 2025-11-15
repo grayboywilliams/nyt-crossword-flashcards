@@ -1,0 +1,249 @@
+Word,Clue,Date,Rank,Occurrences
+Arizona - ARI,Diamondbacks - MLB,-,1,1
+Diamondbacks - MLB,Arizona - ARI,-,2,1
+Atlanta - ATL,Braves - MLB,-,3,1
+Braves - MLB,Atlanta - ATL,-,4,1
+Baltimore - BAL,Orioles - MLB,-,5,1
+Orioles - MLB,Baltimore - BAL,-,6,1
+Boston - BOS,Red Sox - MLB,-,7,1
+Red Sox - MLB,Boston - BOS,-,8,1
+Chicago - CHC,Cubs - MLB,-,9,1
+Cubs - MLB,Chicago - CHC,-,10,1
+Chicago - CHW,White Sox - MLB,-,11,1
+White Sox - MLB,Chicago - CHW,-,12,1
+Cincinnati - CIN,Reds - MLB,-,13,1
+Reds - MLB,Cincinnati - CIN,-,14,1
+Cleveland - CLE,Guardians - MLB,-,15,1
+Guardians - MLB,Cleveland - CLE,-,16,1
+Colorado - COL,Rockies - MLB,-,17,1
+Rockies - MLB,Colorado - COL,-,18,1
+Detroit - DET,Tigers - MLB,-,19,1
+Tigers - MLB,Detroit - DET,-,20,1
+Houston - HOU,Astros - MLB,-,21,1
+Astros - MLB,Houston - HOU,-,22,1
+Kansas City - KC,Royals - MLB,-,23,1
+Royals - MLB,Kansas City - KC,-,24,1
+Los Angeles - LAA,Angels - MLB,-,25,1
+Angels - MLB,Los Angeles - LAA,-,26,1
+Los Angeles - LAD,Dodgers - MLB,-,27,1
+Dodgers - MLB,Los Angeles - LAD,-,28,1
+Miami - MIA,Marlins - MLB,-,29,1
+Marlins - MLB,Miami - MIA,-,30,1
+Milwaukee - MIL,Brewers - MLB,-,31,1
+Brewers - MLB,Milwaukee - MIL,-,32,1
+Minnesota - MIN,Twins - MLB,-,33,1
+Twins - MLB,Minnesota - MIN,-,34,1
+New York - NYM,Mets - MLB,-,35,1
+Mets - MLB,New York - NYM,-,36,1
+New York - NYY,Yankees - MLB,-,37,1
+Yankees - MLB,New York - NYY,-,38,1
+Oakland - OAK,Athletics - MLB,-,39,1
+Athletics - MLB,Oakland - OAK,-,40,1
+Philadelphia - PHI,Phillies - MLB,-,41,1
+Phillies - MLB,Philadelphia - PHI,-,42,1
+Pittsburgh - PIT,Pirates - MLB,-,43,1
+Pirates - MLB,Pittsburgh - PIT,-,44,1
+San Diego - SD,Padres - MLB,-,45,1
+Padres - MLB,San Diego - SD,-,46,1
+San Francisco - SF,Giants - MLB,-,47,1
+Giants - MLB,San Francisco - SF,-,48,1
+Seattle - SEA,Mariners - MLB,-,49,1
+Mariners - MLB,Seattle - SEA,-,50,1
+St. Louis - STL,Cardinals - MLB,-,51,1
+Cardinals - MLB,St. Louis - STL,-,52,1
+Tampa Bay - TB,Rays - MLB,-,53,1
+Rays - MLB,Tampa Bay - TB,-,54,1
+Texas - TEX,Rangers - MLB,-,55,1
+Rangers - MLB,Texas - TEX,-,56,1
+Toronto - TOR,Blue Jays - MLB,-,57,1
+Blue Jays - MLB,Toronto - TOR,-,58,1
+Washington - WSH,Nationals - MLB,-,59,1
+Nationals - MLB,Washington - WSH,-,60,1
+Atlanta - ATL,Hawks - NBA,-,61,1
+Hawks - NBA,Atlanta - ATL,-,62,1
+Boston - BOS,Celtics - NBA,-,63,1
+Celtics - NBA,Boston - BOS,-,64,1
+Brooklyn - BKN,Nets - NBA,-,65,1
+Nets - NBA,Brooklyn - BKN,-,66,1
+Charlotte - CHA,Hornets - NBA,-,67,1
+Hornets - NBA,Charlotte - CHA,-,68,1
+Chicago - CHI,Bulls - NBA,-,69,1
+Bulls - NBA,Chicago - CHI,-,70,1
+Cleveland - CLE,Cavaliers - NBA,-,71,1
+Cavaliers - NBA,Cleveland - CLE,-,72,1
+Dallas - DAL,Mavericks - NBA,-,73,1
+Mavericks - NBA,Dallas - DAL,-,74,1
+Denver - DEN,Nuggets - NBA,-,75,1
+Nuggets - NBA,Denver - DEN,-,76,1
+Detroit - DET,Pistons - NBA,-,77,1
+Pistons - NBA,Detroit - DET,-,78,1
+Golden State - GSW,Warriors - NBA,-,79,1
+Warriors - NBA,Golden State - GSW,-,80,1
+Houston - HOU,Rockets - NBA,-,81,1
+Rockets - NBA,Houston - HOU,-,82,1
+Indiana - IND,Pacers - NBA,-,83,1
+Pacers - NBA,Indiana - IND,-,84,1
+Los Angeles - LAC,Clippers - NBA,-,85,1
+Clippers - NBA,Los Angeles - LAC,-,86,1
+Los Angeles - LAL,Lakers - NBA,-,87,1
+Lakers - NBA,Los Angeles - LAL,-,88,1
+Memphis - MEM,Grizzlies - NBA,-,89,1
+Grizzlies - NBA,Memphis - MEM,-,90,1
+Miami - MIA,Heat - NBA,-,91,1
+Heat - NBA,Miami - MIA,-,92,1
+Milwaukee - MIL,Bucks - NBA,-,93,1
+Bucks - NBA,Milwaukee - MIL,-,94,1
+Minnesota - MIN,Timberwolves - NBA,-,95,1
+Timberwolves - NBA,Minnesota - MIN,-,96,1
+New Orleans - NOP,Pelicans - NBA,-,97,1
+Pelicans - NBA,New Orleans - NOP,-,98,1
+New York - NYK,Knicks - NBA,-,99,1
+Knicks - NBA,New York - NYK,-,100,1
+Oklahoma City - OKC,Thunder - NBA,-,101,1
+Thunder - NBA,Oklahoma City - OKC,-,102,1
+Orlando - ORL,Magic - NBA,-,103,1
+Magic - NBA,Orlando - ORL,-,104,1
+Philadelphia - PHI,76ers - NBA,-,105,1
+76ers - NBA,Philadelphia - PHI,-,106,1
+Phoenix - PHX,Suns - NBA,-,107,1
+Suns - NBA,Phoenix - PHX,-,108,1
+Portland - POR,Trail Blazers - NBA,-,109,1
+Trail Blazers - NBA,Portland - POR,-,110,1
+Sacramento - SAC,Kings - NBA,-,111,1
+Kings - NBA,Sacramento - SAC,-,112,1
+San Antonio - SAS,Spurs - NBA,-,113,1
+Spurs - NBA,San Antonio - SAS,-,114,1
+Toronto - TOR,Raptors - NBA,-,115,1
+Raptors - NBA,Toronto - TOR,-,116,1
+Utah - UTA,Jazz - NBA,-,117,1
+Jazz - NBA,Utah - UTA,-,118,1
+Washington - WAS,Wizards - NBA,-,119,1
+Wizards - NBA,Washington - WAS,-,120,1
+Arizona - ARI,Cardinals - NFL,-,121,1
+Cardinals - NFL,Arizona - ARI,-,122,1
+Atlanta - ATL,Falcons - NFL,-,123,1
+Falcons - NFL,Atlanta - ATL,-,124,1
+Baltimore - BAL,Ravens - NFL,-,125,1
+Ravens - NFL,Baltimore - BAL,-,126,1
+Buffalo - BUF,Bills - NFL,-,127,1
+Bills - NFL,Buffalo - BUF,-,128,1
+Carolina - CAR,Panthers - NFL,-,129,1
+Panthers - NFL,Carolina - CAR,-,130,1
+Chicago - CHI,Bears - NFL,-,131,1
+Bears - NFL,Chicago - CHI,-,132,1
+Cincinnati - CIN,Bengals - NFL,-,133,1
+Bengals - NFL,Cincinnati - CIN,-,134,1
+Cleveland - CLE,Browns - NFL,-,135,1
+Browns - NFL,Cleveland - CLE,-,136,1
+Dallas - DAL,Cowboys - NFL,-,137,1
+Cowboys - NFL,Dallas - DAL,-,138,1
+Denver - DEN,Broncos - NFL,-,139,1
+Broncos - NFL,Denver - DEN,-,140,1
+Detroit - DET,Lions - NFL,-,141,1
+Lions - NFL,Detroit - DET,-,142,1
+Green Bay - GB,Packers - NFL,-,143,1
+Packers - NFL,Green Bay - GB,-,144,1
+Houston - HOU,Texans - NFL,-,145,1
+Texans - NFL,Houston - HOU,-,146,1
+Indianapolis - IND,Colts - NFL,-,147,1
+Colts - NFL,Indianapolis - IND,-,148,1
+Jacksonville - JAX,Jaguars - NFL,-,149,1
+Jaguars - NFL,Jacksonville - JAX,-,150,1
+Kansas City - KC,Chiefs - NFL,-,151,1
+Chiefs - NFL,Kansas City - KC,-,152,1
+Las Vegas - LV,Raiders - NFL,-,153,1
+Raiders - NFL,Las Vegas - LV,-,154,1
+Los Angeles - LAC,Chargers - NFL,-,155,1
+Chargers - NFL,Los Angeles - LAC,-,156,1
+Los Angeles - LAR,Rams - NFL,-,157,1
+Rams - NFL,Los Angeles - LAR,-,158,1
+Miami - MIA,Dolphins - NFL,-,159,1
+Dolphins - NFL,Miami - MIA,-,160,1
+Minnesota - MIN,Vikings - NFL,-,161,1
+Vikings - NFL,Minnesota - MIN,-,162,1
+New England - NE,Patriots - NFL,-,163,1
+Patriots - NFL,New England - NE,-,164,1
+New Orleans - NO,Saints - NFL,-,165,1
+Saints - NFL,New Orleans - NO,-,166,1
+New York - NYG,Giants - NFL,-,167,1
+Giants - NFL,New York - NYG,-,168,1
+New York - NYJ,Jets - NFL,-,169,1
+Jets - NFL,New York - NYJ,-,170,1
+Philadelphia - PHI,Eagles - NFL,-,171,1
+Eagles - NFL,Philadelphia - PHI,-,172,1
+Pittsburgh - PIT,Steelers - NFL,-,173,1
+Steelers - NFL,Pittsburgh - PIT,-,174,1
+San Francisco - SF,49ers - NFL,-,175,1
+49ers - NFL,San Francisco - SF,-,176,1
+Seattle - SEA,Seahawks - NFL,-,177,1
+Seahawks - NFL,Seattle - SEA,-,178,1
+Tampa Bay - TB,Buccaneers - NFL,-,179,1
+Buccaneers - NFL,Tampa Bay - TB,-,180,1
+Tennessee - TEN,Titans - NFL,-,181,1
+Titans - NFL,Tennessee - TEN,-,182,1
+Washington - WAS,Commanders - NFL,-,183,1
+Commanders - NFL,Washington - WAS,-,184,1
+Anaheim - ANA,Ducks - NHL,-,185,1
+Ducks - NHL,Anaheim - ANA,-,186,1
+Arizona - ARI,Coyotes - NHL,-,187,1
+Coyotes - NHL,Arizona - ARI,-,188,1
+Boston - BOS,Bruins - NHL,-,189,1
+Bruins - NHL,Boston - BOS,-,190,1
+Buffalo - BUF,Sabres - NHL,-,191,1
+Sabres - NHL,Buffalo - BUF,-,192,1
+Calgary - CGY,Flames - NHL,-,193,1
+Flames - NHL,Calgary - CGY,-,194,1
+Carolina - CAR,Hurricanes - NHL,-,195,1
+Hurricanes - NHL,Carolina - CAR,-,196,1
+Chicago - CHI,Blackhawks - NHL,-,197,1
+Blackhawks - NHL,Chicago - CHI,-,198,1
+Colorado - COL,Avalanche - NHL,-,199,1
+Avalanche - NHL,Colorado - COL,-,200,1
+Columbus - CBJ,Blue Jackets - NHL,-,201,1
+Blue Jackets - NHL,Columbus - CBJ,-,202,1
+Dallas - DAL,Stars - NHL,-,203,1
+Stars - NHL,Dallas - DAL,-,204,1
+Detroit - DET,Red Wings - NHL,-,205,1
+Red Wings - NHL,Detroit - DET,-,206,1
+Edmonton - EDM,Oilers - NHL,-,207,1
+Oilers - NHL,Edmonton - EDM,-,208,1
+Florida - FLA,Panthers - NHL,-,209,1
+Panthers - NHL,Florida - FLA,-,210,1
+Los Angeles - LAK,Kings - NHL,-,211,1
+Kings - NHL,Los Angeles - LAK,-,212,1
+Minnesota - MIN,Wild - NHL,-,213,1
+Wild - NHL,Minnesota - MIN,-,214,1
+Montreal - MTL,Canadiens - NHL,-,215,1
+Canadiens - NHL,Montreal - MTL,-,216,1
+Nashville - NSH,Predators - NHL,-,217,1
+Predators - NHL,Nashville - NSH,-,218,1
+New Jersey - NJD,Devils - NHL,-,219,1
+Devils - NHL,New Jersey - NJD,-,220,1
+New York - NYI,Islanders - NHL,-,221,1
+Islanders - NHL,New York - NYI,-,222,1
+New York - NYR,Rangers - NHL,-,223,1
+Rangers - NHL,New York - NYR,-,224,1
+Ottawa - OTT,Senators - NHL,-,225,1
+Senators - NHL,Ottawa - OTT,-,226,1
+Philadelphia - PHI,Flyers - NHL,-,227,1
+Flyers - NHL,Philadelphia - PHI,-,228,1
+Pittsburgh - PIT,Penguins - NHL,-,229,1
+Penguins - NHL,Pittsburgh - PIT,-,230,1
+San Jose - SJS,Sharks - NHL,-,231,1
+Sharks - NHL,San Jose - SJS,-,232,1
+Seattle - SEA,Kraken - NHL,-,233,1
+Kraken - NHL,Seattle - SEA,-,234,1
+St. Louis - STL,Blues - NHL,-,235,1
+Blues - NHL,St. Louis - STL,-,236,1
+Tampa Bay - TBL,Lightning - NHL,-,237,1
+Lightning - NHL,Tampa Bay - TBL,-,238,1
+Toronto - TOR,Maple Leafs - NHL,-,239,1
+Maple Leafs - NHL,Toronto - TOR,-,240,1
+Vancouver - VAN,Canucks - NHL,-,241,1
+Canucks - NHL,Vancouver - VAN,-,242,1
+Vegas - VGK,Golden Knights - NHL,-,243,1
+Golden Knights - NHL,Vegas - VGK,-,244,1
+Washington - WSH,Capitals - NHL,-,245,1
+Capitals - NHL,Washington - WSH,-,246,1
+Winnipeg - WPG,Jets - NHL,-,247,1
+Jets - NHL,Winnipeg - WPG,-,248,1
