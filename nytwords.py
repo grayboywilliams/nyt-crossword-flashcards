@@ -411,6 +411,201 @@ def generate_common_clues_flashcards(output_file="study/common_clues_flashcards.
 
     return df
 
+def generate_sports_teams_flashcards(output_file="study/sports_teams_flashcards.csv"):
+    """
+    Generate flashcards for major sports teams (MLB, NBA, NFL, NHL)
+
+    Each team gets 2 flashcard entries for bidirectional learning:
+    1. Clue: Team Name + Sport → Answer: City + Initials
+    2. Clue: City + Initials → Answer: Team Name + Sport
+
+    Args:
+        output_file: Output CSV filename
+
+    Returns:
+        DataFrame with flashcard data
+    """
+    # Comprehensive sports teams data
+    sports_teams = [
+        # MLB Teams (30)
+        {"city": "Arizona", "team": "Diamondbacks", "initials": "ARI", "sport": "MLB"},
+        {"city": "Atlanta", "team": "Braves", "initials": "ATL", "sport": "MLB"},
+        {"city": "Baltimore", "team": "Orioles", "initials": "BAL", "sport": "MLB"},
+        {"city": "Boston", "team": "Red Sox", "initials": "BOS", "sport": "MLB"},
+        {"city": "Chicago", "team": "Cubs", "initials": "CHC", "sport": "MLB"},
+        {"city": "Chicago", "team": "White Sox", "initials": "CHW", "sport": "MLB"},
+        {"city": "Cincinnati", "team": "Reds", "initials": "CIN", "sport": "MLB"},
+        {"city": "Cleveland", "team": "Guardians", "initials": "CLE", "sport": "MLB"},
+        {"city": "Colorado", "team": "Rockies", "initials": "COL", "sport": "MLB"},
+        {"city": "Detroit", "team": "Tigers", "initials": "DET", "sport": "MLB"},
+        {"city": "Houston", "team": "Astros", "initials": "HOU", "sport": "MLB"},
+        {"city": "Kansas City", "team": "Royals", "initials": "KC", "sport": "MLB"},
+        {"city": "Los Angeles", "team": "Angels", "initials": "LAA", "sport": "MLB"},
+        {"city": "Los Angeles", "team": "Dodgers", "initials": "LAD", "sport": "MLB"},
+        {"city": "Miami", "team": "Marlins", "initials": "MIA", "sport": "MLB"},
+        {"city": "Milwaukee", "team": "Brewers", "initials": "MIL", "sport": "MLB"},
+        {"city": "Minnesota", "team": "Twins", "initials": "MIN", "sport": "MLB"},
+        {"city": "New York", "team": "Mets", "initials": "NYM", "sport": "MLB"},
+        {"city": "New York", "team": "Yankees", "initials": "NYY", "sport": "MLB"},
+        {"city": "Oakland", "team": "Athletics", "initials": "OAK", "sport": "MLB"},
+        {"city": "Philadelphia", "team": "Phillies", "initials": "PHI", "sport": "MLB"},
+        {"city": "Pittsburgh", "team": "Pirates", "initials": "PIT", "sport": "MLB"},
+        {"city": "San Diego", "team": "Padres", "initials": "SD", "sport": "MLB"},
+        {"city": "San Francisco", "team": "Giants", "initials": "SF", "sport": "MLB"},
+        {"city": "Seattle", "team": "Mariners", "initials": "SEA", "sport": "MLB"},
+        {"city": "St. Louis", "team": "Cardinals", "initials": "STL", "sport": "MLB"},
+        {"city": "Tampa Bay", "team": "Rays", "initials": "TB", "sport": "MLB"},
+        {"city": "Texas", "team": "Rangers", "initials": "TEX", "sport": "MLB"},
+        {"city": "Toronto", "team": "Blue Jays", "initials": "TOR", "sport": "MLB"},
+        {"city": "Washington", "team": "Nationals", "initials": "WSH", "sport": "MLB"},
+
+        # NBA Teams (30)
+        {"city": "Atlanta", "team": "Hawks", "initials": "ATL", "sport": "NBA"},
+        {"city": "Boston", "team": "Celtics", "initials": "BOS", "sport": "NBA"},
+        {"city": "Brooklyn", "team": "Nets", "initials": "BKN", "sport": "NBA"},
+        {"city": "Charlotte", "team": "Hornets", "initials": "CHA", "sport": "NBA"},
+        {"city": "Chicago", "team": "Bulls", "initials": "CHI", "sport": "NBA"},
+        {"city": "Cleveland", "team": "Cavaliers", "initials": "CLE", "sport": "NBA"},
+        {"city": "Dallas", "team": "Mavericks", "initials": "DAL", "sport": "NBA"},
+        {"city": "Denver", "team": "Nuggets", "initials": "DEN", "sport": "NBA"},
+        {"city": "Detroit", "team": "Pistons", "initials": "DET", "sport": "NBA"},
+        {"city": "Golden State", "team": "Warriors", "initials": "GSW", "sport": "NBA"},
+        {"city": "Houston", "team": "Rockets", "initials": "HOU", "sport": "NBA"},
+        {"city": "Indiana", "team": "Pacers", "initials": "IND", "sport": "NBA"},
+        {"city": "Los Angeles", "team": "Clippers", "initials": "LAC", "sport": "NBA"},
+        {"city": "Los Angeles", "team": "Lakers", "initials": "LAL", "sport": "NBA"},
+        {"city": "Memphis", "team": "Grizzlies", "initials": "MEM", "sport": "NBA"},
+        {"city": "Miami", "team": "Heat", "initials": "MIA", "sport": "NBA"},
+        {"city": "Milwaukee", "team": "Bucks", "initials": "MIL", "sport": "NBA"},
+        {"city": "Minnesota", "team": "Timberwolves", "initials": "MIN", "sport": "NBA"},
+        {"city": "New Orleans", "team": "Pelicans", "initials": "NOP", "sport": "NBA"},
+        {"city": "New York", "team": "Knicks", "initials": "NYK", "sport": "NBA"},
+        {"city": "Oklahoma City", "team": "Thunder", "initials": "OKC", "sport": "NBA"},
+        {"city": "Orlando", "team": "Magic", "initials": "ORL", "sport": "NBA"},
+        {"city": "Philadelphia", "team": "76ers", "initials": "PHI", "sport": "NBA"},
+        {"city": "Phoenix", "team": "Suns", "initials": "PHX", "sport": "NBA"},
+        {"city": "Portland", "team": "Trail Blazers", "initials": "POR", "sport": "NBA"},
+        {"city": "Sacramento", "team": "Kings", "initials": "SAC", "sport": "NBA"},
+        {"city": "San Antonio", "team": "Spurs", "initials": "SAS", "sport": "NBA"},
+        {"city": "Toronto", "team": "Raptors", "initials": "TOR", "sport": "NBA"},
+        {"city": "Utah", "team": "Jazz", "initials": "UTA", "sport": "NBA"},
+        {"city": "Washington", "team": "Wizards", "initials": "WAS", "sport": "NBA"},
+
+        # NFL Teams (32)
+        {"city": "Arizona", "team": "Cardinals", "initials": "ARI", "sport": "NFL"},
+        {"city": "Atlanta", "team": "Falcons", "initials": "ATL", "sport": "NFL"},
+        {"city": "Baltimore", "team": "Ravens", "initials": "BAL", "sport": "NFL"},
+        {"city": "Buffalo", "team": "Bills", "initials": "BUF", "sport": "NFL"},
+        {"city": "Carolina", "team": "Panthers", "initials": "CAR", "sport": "NFL"},
+        {"city": "Chicago", "team": "Bears", "initials": "CHI", "sport": "NFL"},
+        {"city": "Cincinnati", "team": "Bengals", "initials": "CIN", "sport": "NFL"},
+        {"city": "Cleveland", "team": "Browns", "initials": "CLE", "sport": "NFL"},
+        {"city": "Dallas", "team": "Cowboys", "initials": "DAL", "sport": "NFL"},
+        {"city": "Denver", "team": "Broncos", "initials": "DEN", "sport": "NFL"},
+        {"city": "Detroit", "team": "Lions", "initials": "DET", "sport": "NFL"},
+        {"city": "Green Bay", "team": "Packers", "initials": "GB", "sport": "NFL"},
+        {"city": "Houston", "team": "Texans", "initials": "HOU", "sport": "NFL"},
+        {"city": "Indianapolis", "team": "Colts", "initials": "IND", "sport": "NFL"},
+        {"city": "Jacksonville", "team": "Jaguars", "initials": "JAX", "sport": "NFL"},
+        {"city": "Kansas City", "team": "Chiefs", "initials": "KC", "sport": "NFL"},
+        {"city": "Las Vegas", "team": "Raiders", "initials": "LV", "sport": "NFL"},
+        {"city": "Los Angeles", "team": "Chargers", "initials": "LAC", "sport": "NFL"},
+        {"city": "Los Angeles", "team": "Rams", "initials": "LAR", "sport": "NFL"},
+        {"city": "Miami", "team": "Dolphins", "initials": "MIA", "sport": "NFL"},
+        {"city": "Minnesota", "team": "Vikings", "initials": "MIN", "sport": "NFL"},
+        {"city": "New England", "team": "Patriots", "initials": "NE", "sport": "NFL"},
+        {"city": "New Orleans", "team": "Saints", "initials": "NO", "sport": "NFL"},
+        {"city": "New York", "team": "Giants", "initials": "NYG", "sport": "NFL"},
+        {"city": "New York", "team": "Jets", "initials": "NYJ", "sport": "NFL"},
+        {"city": "Philadelphia", "team": "Eagles", "initials": "PHI", "sport": "NFL"},
+        {"city": "Pittsburgh", "team": "Steelers", "initials": "PIT", "sport": "NFL"},
+        {"city": "San Francisco", "team": "49ers", "initials": "SF", "sport": "NFL"},
+        {"city": "Seattle", "team": "Seahawks", "initials": "SEA", "sport": "NFL"},
+        {"city": "Tampa Bay", "team": "Buccaneers", "initials": "TB", "sport": "NFL"},
+        {"city": "Tennessee", "team": "Titans", "initials": "TEN", "sport": "NFL"},
+        {"city": "Washington", "team": "Commanders", "initials": "WAS", "sport": "NFL"},
+
+        # NHL Teams (32)
+        {"city": "Anaheim", "team": "Ducks", "initials": "ANA", "sport": "NHL"},
+        {"city": "Arizona", "team": "Coyotes", "initials": "ARI", "sport": "NHL"},
+        {"city": "Boston", "team": "Bruins", "initials": "BOS", "sport": "NHL"},
+        {"city": "Buffalo", "team": "Sabres", "initials": "BUF", "sport": "NHL"},
+        {"city": "Calgary", "team": "Flames", "initials": "CGY", "sport": "NHL"},
+        {"city": "Carolina", "team": "Hurricanes", "initials": "CAR", "sport": "NHL"},
+        {"city": "Chicago", "team": "Blackhawks", "initials": "CHI", "sport": "NHL"},
+        {"city": "Colorado", "team": "Avalanche", "initials": "COL", "sport": "NHL"},
+        {"city": "Columbus", "team": "Blue Jackets", "initials": "CBJ", "sport": "NHL"},
+        {"city": "Dallas", "team": "Stars", "initials": "DAL", "sport": "NHL"},
+        {"city": "Detroit", "team": "Red Wings", "initials": "DET", "sport": "NHL"},
+        {"city": "Edmonton", "team": "Oilers", "initials": "EDM", "sport": "NHL"},
+        {"city": "Florida", "team": "Panthers", "initials": "FLA", "sport": "NHL"},
+        {"city": "Los Angeles", "team": "Kings", "initials": "LAK", "sport": "NHL"},
+        {"city": "Minnesota", "team": "Wild", "initials": "MIN", "sport": "NHL"},
+        {"city": "Montreal", "team": "Canadiens", "initials": "MTL", "sport": "NHL"},
+        {"city": "Nashville", "team": "Predators", "initials": "NSH", "sport": "NHL"},
+        {"city": "New Jersey", "team": "Devils", "initials": "NJD", "sport": "NHL"},
+        {"city": "New York", "team": "Islanders", "initials": "NYI", "sport": "NHL"},
+        {"city": "New York", "team": "Rangers", "initials": "NYR", "sport": "NHL"},
+        {"city": "Ottawa", "team": "Senators", "initials": "OTT", "sport": "NHL"},
+        {"city": "Philadelphia", "team": "Flyers", "initials": "PHI", "sport": "NHL"},
+        {"city": "Pittsburgh", "team": "Penguins", "initials": "PIT", "sport": "NHL"},
+        {"city": "San Jose", "team": "Sharks", "initials": "SJS", "sport": "NHL"},
+        {"city": "Seattle", "team": "Kraken", "initials": "SEA", "sport": "NHL"},
+        {"city": "St. Louis", "team": "Blues", "initials": "STL", "sport": "NHL"},
+        {"city": "Tampa Bay", "team": "Lightning", "initials": "TBL", "sport": "NHL"},
+        {"city": "Toronto", "team": "Maple Leafs", "initials": "TOR", "sport": "NHL"},
+        {"city": "Vancouver", "team": "Canucks", "initials": "VAN", "sport": "NHL"},
+        {"city": "Vegas", "team": "Golden Knights", "initials": "VGK", "sport": "NHL"},
+        {"city": "Washington", "team": "Capitals", "initials": "WSH", "sport": "NHL"},
+        {"city": "Winnipeg", "team": "Jets", "initials": "WPG", "sport": "NHL"},
+    ]
+
+    print(f"Generating sports team flashcards for {len(sports_teams)} teams...")
+
+    flashcards = []
+
+    for i, team in enumerate(sports_teams):
+        # Flashcard 1: Team Name + Sport → City + Initials
+        flashcards.append({
+            "Word": f"{team['city']} - {team['initials']}",  # Answer
+            "Clue": f"{team['team']} - {team['sport']}",      # Clue
+            "Date": "-",
+            "Rank": i * 2 + 1,
+            "Occurrences": 1
+        })
+
+        # Flashcard 2: City + Initials → Team Name + Sport (reverse)
+        flashcards.append({
+            "Word": f"{team['team']} - {team['sport']}",      # Answer
+            "Clue": f"{team['city']} - {team['initials']}",   # Clue
+            "Date": "-",
+            "Rank": i * 2 + 2,
+            "Occurrences": 1
+        })
+
+    # Create DataFrame and save
+    df = pd.DataFrame(flashcards)
+
+    # Ensure output directory exists
+    import os
+    output_dir = os.path.dirname(output_file)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    df.to_csv(output_file, index=False)
+
+    print(f"\nGenerated {len(flashcards)} flashcards ({len(sports_teams)} teams × 2 directions)")
+    print(f"Saved to {output_file}")
+    print(f"\nBreakdown by sport:")
+    for sport in ["MLB", "NBA", "NFL", "NHL"]:
+        count = len([t for t in sports_teams if t['sport'] == sport])
+        print(f"  {sport}: {count} teams ({count * 2} flashcards)")
+
+    print(f"\nSample flashcards:")
+    print(df.head(10))
+
+    return df
+
 def process_wordlist_csv(csv_file="wordlist.csv", output_file="output.csv"):
     """
     Process entire wordlist CSV and output results to CSV file
@@ -547,6 +742,9 @@ if __name__ == "__main__":
                 print("Error: Second argument must be a number")
                 sys.exit(1)
         generate_common_clues_flashcards(top_n=top_n)
+    elif len(sys.argv) > 1 and sys.argv[1] == "--sports-teams":
+        # Generate flashcards for major sports teams (MLB, NBA, NFL, NHL)
+        generate_sports_teams_flashcards()
     else:
         # Process existing wordlist to get clues
         process_wordlist_csv()

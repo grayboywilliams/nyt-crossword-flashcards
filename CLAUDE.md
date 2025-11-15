@@ -63,11 +63,31 @@ This will create a file `common_clues_flashcards.csv` with columns:
 
 Note: Cross-reference clues (e.g., "See 17-Across") are automatically filtered out.
 
+### Generate Sports Teams Flashcards
+Create flashcards for all major sports teams (MLB, NBA, NFL, NHL):
+
+```bash
+python3 nytwords.py --sports-teams
+```
+
+This will create a file `study/sports_teams_flashcards.csv` with bidirectional flashcards:
+- Each team has 2 flashcard entries for versatile learning
+- Direction 1: Team Name + Sport → City + Initials (e.g., "Lakers - NBA" → "Los Angeles - LAL")
+- Direction 2: City + Initials → Team Name + Sport (e.g., "Los Angeles - LAL" → "Lakers - NBA")
+
+Coverage:
+- MLB: 30 teams (60 flashcards)
+- NBA: 30 teams (60 flashcards)
+- NFL: 32 teams (64 flashcards)
+- NHL: 32 teams (64 flashcards)
+- **Total: 124 teams, 248 flashcards**
+
 ### Available Functions
 - `generate_wordlist_from_popular(output_file="wordlist.csv", top_n=100)` - Generate wordlist from Popular page
 - `get_clues_for_word(word, n_clues, session=None)` - Get clues for single word, prints to console
 - `process_wordlist_csv(csv_file="wordlist.csv", output_file="output.csv")` - Process entire CSV
 - `generate_common_clues_flashcards(output_file="common_clues_flashcards.csv", top_n=50, top_answers=5)` - Generate flashcards for common clues with top N answers
+- `generate_sports_teams_flashcards(output_file="study/sports_teams_flashcards.csv")` - Generate flashcards for all major sports teams (MLB, NBA, NFL, NHL)
 - `get_common_clues(top_n=100, session=None)` - Get list of most common clues (filters out cross-references)
 - `get_answers_for_clue(clue, session=None, top_n=5)` - Search for top N most-used answers to a specific clue
 - `create_session()` - Create authenticated session for xwordinfo.com
@@ -76,7 +96,8 @@ Note: Cross-reference clues (e.g., "See 17-Across") are automatically filtered o
 
 - `wordlist.csv` - Input file with word statistics (Word, Clues, Occurrences, Rank)
 - `output.csv` - Generated output with format (Word, Clue, Date, Rank, Occurrences)
-- `common_clues_flashcards.csv` - Generated flashcards with format (Clue, ClueCount, TopAnswers, NumTopAnswers)
+- `study/common_clues_flashcards.csv` - Generated flashcards with format (Word, Clue, Date, Rank, Occurrences)
+- `study/sports_teams_flashcards.csv` - Generated sports team flashcards with format (Word, Clue, Date, Rank, Occurrences)
 - Script uses the "Clues" column from wordlist.csv to determine how many recent clues to fetch per word
 
 ## Notes
