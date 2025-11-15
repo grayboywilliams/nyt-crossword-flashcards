@@ -72,8 +72,8 @@ python3 nytwords.py --sports-teams
 
 This will create a file `study/sports_teams_flashcards.csv` with bidirectional flashcards:
 - Each team has 2 flashcard entries for versatile learning
-- Direction 1: Team Name + Sport → City + Initials (e.g., "Lakers - NBA" → "Los Angeles - LAL")
-- Direction 2: City + Initials → Team Name + Sport (e.g., "Los Angeles - LAL" → "Lakers - NBA")
+- Direction 1: Team Name + Sport → City + Initials + Sport (e.g., "Lakers - NBA" → "Los Angeles - LAL - NBA")
+- Direction 2: City + Initials + Sport → Team Name + Sport (e.g., "Los Angeles - LAL - NBA" → "Lakers - NBA")
 
 Coverage:
 - MLB: 30 teams (60 flashcards)
