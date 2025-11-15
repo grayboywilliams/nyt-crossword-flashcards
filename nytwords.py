@@ -565,19 +565,19 @@ def generate_sports_teams_flashcards(output_file="study/sports_teams_flashcards.
     flashcards = []
 
     for i, team in enumerate(sports_teams):
-        # Flashcard 1: Team Name + Sport → City + Initials
+        # Flashcard 1: Team Name + Sport → City + Initials + Sport
         flashcards.append({
-            "Word": f"{team['city']} - {team['initials']}",  # Answer
+            "Word": f"{team['city']} - {team['initials']} - {team['sport']}",  # Answer
             "Clue": f"{team['team']} - {team['sport']}",      # Clue
             "Date": "-",
             "Rank": i * 2 + 1,
             "Occurrences": 1
         })
 
-        # Flashcard 2: City + Initials → Team Name + Sport (reverse)
+        # Flashcard 2: City + Initials + Sport → Team Name + Sport (reverse)
         flashcards.append({
             "Word": f"{team['team']} - {team['sport']}",      # Answer
-            "Clue": f"{team['city']} - {team['initials']}",   # Clue
+            "Clue": f"{team['city']} - {team['initials']} - {team['sport']}",   # Clue
             "Date": "-",
             "Rank": i * 2 + 2,
             "Occurrences": 1
